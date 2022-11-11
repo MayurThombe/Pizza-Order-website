@@ -1,0 +1,72 @@
+/* Write style code here*/
+body{
+    margin:0px;
+}
+h1{
+    background-color:blue;
+    color:lightskyblue;
+    padding:10px;
+    box-shadow: hsl(0, 81%, 62%) 0px 5px 15px;
+}
+#form-container{
+    border:2px solid black;
+    width:1000px;
+    margin:auto;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 40px;
+    padding-bottom: 5px;
+    box-shadow: hsl(0, 87%, 69%) 0px 5px 15px;
+}
+.inputs{
+    width:100%;
+    height:25px;
+    border-style: hidden;
+    border-bottom: 1px solid black;
+    
+}
+textarea{
+    width:100%;
+    border-style: hidden;
+    border-bottom: 1px solid black;
+}
+h5{
+    margin-bottom: 2px;
+    margin-top: 10px;
+}
+h3{
+    margin-bottom: 40px;
+}
+#addOrder{
+    display: inline-block;
+}
+#addOrderButton{
+    border-radius: 50%;
+
+}
+#submitId{
+    display: block;
+}
+#total{
+    display: inline-block;
+}
+#myform{
+    margin-bottom: 0px;
+}
+#orderInput{
+    margin-left: 5px;
+}
+#orderInput input{
+    margin-right: 10px;
+}
+#totalAmountId{
+    background-color: lightgreen;
+}
+#form-title{
+    margin-bottom: 5px;
+}
+#submitId{
+    background-color: blue;
+    color:aqua;
+}

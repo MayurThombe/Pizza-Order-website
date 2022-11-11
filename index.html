@@ -1,0 +1,307 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Pizza Order Form</title>
+</head>
+<style>
+    /* Write style code here*/
+body{
+    margin:0px;
+}
+h1{
+    background-color:blue;
+    color:lightskyblue;
+    padding:10px;
+    box-shadow: hsl(0, 81%, 62%) 0px 5px 15px;
+}
+#form-container{
+    border:2px solid black;
+    width:1000px;
+    margin:auto;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-right: 40px;
+    padding-bottom: 5px;
+    box-shadow: hsl(0, 87%, 69%) 0px 5px 15px;
+}
+.inputs{
+    width:100%;
+    height:25px;
+    border-style: hidden;
+    border-bottom: 1px solid black;
+    
+}
+textarea{
+    width:100%;
+    border-style: hidden;
+    border-bottom: 1px solid black;
+}
+h5{
+    margin-bottom: 2px;
+    margin-top: 10px;
+}
+h3{
+    margin-bottom: 40px;
+}
+#addOrder{
+    display: inline-block;
+}
+#addOrderButton{
+    border-radius: 50%;
+
+}
+#submitId{
+    display: block;
+}
+#total{
+    display: inline-block;
+}
+#myform{
+    margin-bottom: 0px;
+}
+#orderInput{
+    margin-left: 5px;
+}
+#orderInput input{
+    margin-right: 10px;
+}
+#totalAmountId{
+    background-color: lightgreen;
+}
+#form-title{
+    margin-bottom: 5px;
+}
+#submitId{
+    background-color: blue;
+    color:aqua;
+}
+</style>
+
+<body>
+    <!-- Create order form with various fields as mentioned in README file -->
+    <h1>Pizza Order App</h1>
+    <div id="form-container">
+        <h3 id="form-title">Fill up order details here</h3>
+        <form action="#" id="myform">
+        <h5>Order id:</h5>
+        <input type="number" id="orderId" class="inputs">
+        <h5>Customer Name:</h5>
+        <input type="text" id="customerNameId" class="inputs" required>
+        <h5>Email id:</h5>
+        <input type="email" id="emailId" class="inputs" required>
+        <h5>contact Number:</h5>
+        <input type="tel" id="contactNumberId" class="inputs" pattern="[0-9]{10}" title="Please enter a 10 digit number" required>
+        <h5>Order date:</h5>
+        <input type="date" id="dateId" class="inputs">
+        <h5>Address:</h5>
+        <textarea name="" id="addressId" cols="30" rows="2" required></textarea>
+        <br><br>
+        <h5 id="addOrder">Add Order:</h5>
+        <button id="addOrderButton" onclick="saveOrder(); calculateTotal()">+</button>
+        <div class="row">
+            <div class="col"><h5>Category</h5></div>
+            <div class="col"><h5>Item Name</h5></div>
+            <div class="col"><h5>Price</h5></div>
+            <div class="col"><h5>Quantity</h5></div>
+            <div class="col"><h5>Amount</h5></div>
+        </div>
+        <div id="addOrders"></div>
+        <div id="orderInput" class="row">
+        <input list="CategoryName" id="categoryNameId" class="col" required>
+        <datalist id="CategoryName">
+            <option value="Beverages">
+            <option value="Starters">
+            <option value="Main Meal">
+        </datalist>
+        <input list="ItemName" id="itemNameId" onchange="getPrice()" class="col" required>
+        <datalist id="ItemName">
+            <option value="Coke">
+            <option value="Garlic Bread">
+            <option value="Mozzerella Sticks"></option>
+            <option value="Medium Size Margherita Pizza">
+            <option value="Iced Tea">
+            <option value="Greek Wedge Salad">
+            <option value="Soft Drink">
+            <option value="Veg Family Meal">
+            <option value="Large Size Vegan Pepperoni Pizza">           
+        </datalist>
+        <input type="number" class="col" id="priceId" value="0" readonly>
+        <input type="number" class="col" id="quantityId" onchange="calculateAmount()" value="0" required>
+        <input type="number" class="col" id="amountId" value="0" readonly>
+        </div>
+        <br>
+        <h5 id="total">Total Amount:</h5>
+        <input type="text" id="totalAmountId" value="0" readonly>
+        <input type="submit" name="" id="submitId" onclick="orderSubmitted()" value="Order Now">
+        </form>
+    </div>
+    <script>
+        // Write solution code here to dynamically add the form fields 
+let customerDetails = [];
+let orderList = [];
+let OrderIdCount = 0;
+let orderItemCount = 0;
+
+window.load = setOrderId();
+function setOrderId(){
+    document.getElementById('orderId').value = 0;
+    console.log("Window reset, order id set to zero");
+}
+
+const order = document.getElementById('orderId').value;
+const name = document.getElementById('customerNameId').value;
+
+
+function saveOrder(){
+    let categoryName = document.getElementById('categoryNameId').value;
+    let itemName = document.getElementById('itemNameId').value;
+    let price = document.getElementById('priceId').value;
+    let quantity = document.getElementById('quantityId').value;
+    let amount = document.getElementById('amountId').value;
+
+    if(categoryName.length==0||itemName.length==0||price==0||quantity==0||amount==0){
+        console.log("Enter a valid order");
+        return false;
+    }
+    orderList.push({
+                    'Category_Name' : categoryName,
+                    'Item_Name' : itemName,
+                    'Price' : price,
+                    'Quantity' : quantity,
+                    'Amount' : amount
+    })
+
+    //creating a order item card
+    
+    const newOrder = document.createElement("div");
+    const divFromHTML = document.getElementById("addOrders");
+    divFromHTML.append(newOrder);
+    newOrder.classList.add('row');
+    
+    const newCategory = document.createElement('h6');
+    newOrder.append(newCategory);
+    newCategory.classList.add('col');
+    newCategory.innerHTML = orderList[orderItemCount].Category_Name;
+
+    const newItem = document.createElement('h6');
+    newOrder.append(newItem);
+    newItem.classList.add('col');
+    newItem.innerHTML = orderList[orderItemCount].Item_Name;
+
+    const newPrice = document.createElement('h6');
+    newOrder.append(newPrice);
+    newPrice.classList.add('col');
+    newPrice.innerHTML = orderList[orderItemCount].Price;
+
+    const newQuantity = document.createElement('h6');
+    newOrder.append(newQuantity);
+    newQuantity.classList.add('col');
+    newQuantity.innerHTML = orderList[orderItemCount].Quantity;
+
+    const newAmount = document.createElement('h6');
+    newOrder.append(newAmount);
+    newAmount.classList.add('col');
+    newAmount.innerHTML = orderList[orderItemCount].Amount;
+
+    orderItemCount = orderItemCount + 1;
+
+    //reseting order inputs after add order
+    document.getElementById('categoryNameId').value = '';
+    document.getElementById('itemNameId').value = '';
+    document.getElementById('priceId').value = '0';
+    document.getElementById('quantityId').value = '0';
+    document.getElementById('amountId').value = '0';
+    
+
+}
+
+function getPrice(){
+    const itemName = document.getElementById("itemNameId");
+    
+    if(itemName.value=='Coke'){document.getElementById("priceId").value="1.5";}
+    else if(itemName.value=='Garlic Bread'){document.getElementById("priceId").value="2.8";}
+    else if(itemName.value=='Mozzerella Sticks'){document.getElementById("priceId").value="5.5";}
+    else if(itemName.value=='Medium Size Margherita Pizza'){document.getElementById("priceId").value="11";}
+    else if(itemName.value=='Iced Tea'){document.getElementById("priceId").value="1.25";}
+    else if(itemName.value=='Greek Wedge Salad'){document.getElementById("priceId").value="4.5";}
+    else if(itemName.value=='Soft Drink'){document.getElementById("priceId").value="1.25";}
+    else if(itemName.value=='Veg Family Meal'){document.getElementById("priceId").value="13.25";}
+    else if(itemName.value=='Large Size Vegan Pepperoni Pizza'){document.getElementById("priceId").value="14.5";}
+    else{document.getElementById("priceId").value="-1";}
+}
+
+function calculateAmount(){
+    const price = document.getElementById("priceId").value;
+    const quantity = document.getElementById("quantityId").value;
+    const amount = price*quantity;
+    document.getElementById("amountId").value=amount;
+}
+
+let totalAmount = 0;
+function calculateTotal(){
+    totalAmount = 0;
+    for(let i=0;i<orderList.length;i++){
+        totalAmount = parseFloat(totalAmount) + parseFloat(orderList[i].Amount);
+    }
+    document.getElementById('totalAmountId').value = totalAmount;
+}
+
+// Save the order details on clicking the submit button
+function orderSubmitted(){
+    const orderId = document.getElementById('orderId').value;
+    const customerName = document.getElementById('customerNameId').value;
+    const emailId = document.getElementById('emailId').value;
+    const contactNumber = document.getElementById('contactNumberId').value;
+    const orderDate = document.getElementById('dateId').value;
+    const address = document.getElementById('addressId').value;
+
+    if(orderId.length==0||customerName.length==0||emailId.length==0||contactNumber.length==0||address.length==0||orderList.length==0){
+        console.log("Enter all customer details and atleast one order");
+        return false;
+    }
+
+    customerDetails.push({
+                    'Order Id' : orderId,
+                    'Customer Name' : customerName,
+                    'Email Id' : emailId,
+                    'Contact Number' : contactNumber,
+                    'Order Date' : orderDate,
+                    'Address' : address,
+                    'Order list' : orderList,
+                    'Total_bill' : totalAmount
+    })
+    console.log(customerDetails);
+
+    OrderIdCount = OrderIdCount + 1;
+    document.getElementById('orderId').value = OrderIdCount;
+
+    alert("Total amount to be paid: " + totalAmount);
+
+    orderList = [];
+    orderItemCount = 0;
+
+    //removing the orders cards once order now is clicked
+    e = document.getElementById('addOrders');
+    var child = e.lastElementChild; 
+    while (child) {
+        e.removeChild(child);
+        child = e.lastElementChild;
+    }
+
+    //reseting the customer details 
+    
+    document.getElementById('customerNameId').value='';
+    document.getElementById('emailId').value='';
+    document.getElementById('contactNumberId').value='';
+    document.getElementById('dateId').value='';
+    document.getElementById('addressId').value='';
+    document.getElementById('totalAmountId').value='';
+}
+    </script>
+</body>
+</html>
